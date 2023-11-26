@@ -1,0 +1,96 @@
+const exercises_data = [
+  {
+    id: 1,
+    type: 'chest',
+    exercises: [
+      { id: 1, name: 'Bench Press' },
+      { id: 2, name: 'Dumbbell Chest fly' },
+      { id: 3, name: 'Pushup' },
+      { id: 4, name: 'Machine Chess Press' },
+      { id: 5, name: 'Incline Dumbbell Bench Press' },
+      { id: 6, name: 'Cable Fly' },
+    ],
+  },
+  {
+    id: 2,
+    type: 'shoulder',
+    exercises: [
+      { id: 1, name: 'Shoulder Press' },
+      { id: 2, name: 'Side lateral Raise' },
+      { id: 3, name: 'Reverse fly' },
+      { id: 4, name: 'Front raise' },
+      { id: 5, name: 'Arnold Press' },
+      { id: 6, name: 'Cable lateral raise' },
+      { id: 7, name: 'Face pull' },
+    ],
+  },
+  {
+    id: 3,
+    type: 'tricep',
+    exercises: [
+      { id: 1, name: 'Lying Triceps Extension' },
+      { id: 2, name: 'Overhead Triceps Extension' },
+      { id: 3, name: 'Tricep dip' },
+      { id: 4, name: 'Tricep Dumbbell Kickback' },
+      { id: 5, name: 'Tricep Pushup' },
+    ],
+  },
+  {
+    id: 4,
+    type: 'back',
+    exercises: [
+      { id: 1, name: 'Dumbbell Row' },
+      { id: 2, name: 'Pull-up' },
+      { id: 3, name: 'Deadlift' },
+      { id: 4, name: 'Dumbbell Pullover' },
+      { id: 5, name: 'Lat Pulldown' },
+      { id: 6, name: 'T-bar Row' },
+      { id: 7, name: 'Face pull' },
+      { id: 8, name: 'Seated Cable Row' },
+    ],
+  },
+  {
+    id: 5,
+    type: 'biceps',
+    exercises: [
+      { id: 1, name: 'Bicep curl' },
+      { id: 2, name: 'Barbell curl' },
+      { id: 3, name: 'Incline Dumbbell Curl' },
+      { id: 4, name: 'Hammer Curl' },
+      { id: 5, name: 'Conceentration Curls' },
+      { id: 6, name: 'Cable lateral raise' },
+    ],
+  },
+  {
+    id: 6,
+    type: 'abs',
+    exercises: [
+      { id: 1, name: 'Crunch' },
+      { id: 2, name: 'Reverse Crunch' },
+      { id: 3, name: 'Plank' },
+      { id: 4, name: 'Side Plank' },
+      { id: 5, name: 'Bicycle Crunch' },
+      { id: 6, name: 'Leg Raise' },
+      { id: 7, name: 'Situp' },
+      { id: 8, name: 'Heel Taps' },
+      { id: 9, name: 'Russian Twists' },
+    ],
+  },
+  {
+    id: 7,
+    type: 'leg',
+    exercises: [
+      { id: 1, name: 'Squat' },
+      { id: 2, name: 'Deadlift' },
+      { id: 3, name: 'Reverse Lunge' },
+      { id: 4, name: 'Bulgarian split squat' },
+      { id: 5, name: 'Romanian Deadlift' },
+      { id: 6, name: 'Leg Press' },
+      { id: 7, name: 'Leg Curl' },
+      { id: 8, name: 'Glute Bridge' },
+      { id: 9, name: 'Calf Raise' },
+    ],
+  },
+];
+
+export default exercises_data;
