@@ -65,7 +65,7 @@ export default function Register() {
             <Link href={'/'}>
               <button
                 type="submit"
-                className="w-72 py-3 px-8 bg-primary text-center text-2xl rounded-2xl text-[#fff] font-semibold border-2 border-primary ease-in-out delay-75 hover:bg-[#fff] hover:text-primary"
+                className="w-72 py-3 px-8 bg-primary text-center text-2xl rounded-2xl text-[#fff] font-semibold border-2 border-primary ease-in-out delay-75 lg:hover:bg-[#fff] lg:hover:text-primary"
               >
                 Register
               </button>
