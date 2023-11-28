@@ -2,10 +2,11 @@
 import SoundPlayer from '@/components/SoundPlayer';
 import Logo from '@/components/logo';
 import { useExerciseContext } from '@/context/ExerciseContext';
+import { nanoid } from 'nanoid';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Countdown from 'react-countdown';
+import Countdown, { zeroPad } from 'react-countdown';
 
 export default function StartWorkout() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function StartWorkout() {
   const [maxSet, setMaxSet] = useState(exerciseData[0]?.sets);
   const [displaySetBoxex, setDisplaySetBoxes] = useState([]);
   const [currentSetBoxex, setCurrentSetBoxes] = useState([]);
-  const [restTime, setRestTime] = useState(1);
+  const [restTime, setRestTime] = useState(0);
   const [isRest, setIsRest] = useState(false);
 
   const handleChange = (event) => {
@@ -28,12 +29,17 @@ export default function StartWorkout() {
   };
 
   const renderer = ({ minutes, seconds, completed }) => {
-    if (completed) {
-      return <SoundPlayer src={alarm} />;
+    if (completed && isRest) {
+      setTimeout(() => setIsRest(false), 5000);
+      return (
+        <>
+          <SoundPlayer src={alarm} />
+        </>
+      );
     } else {
       return (
         <h1 className="font-extrabold text-7xl text-white">
-          {minutes}:{seconds}
+          {zeroPad(minutes)}:{zeroPad(seconds)}
         </h1>
       );
     }
@@ -115,8 +121,8 @@ export default function StartWorkout() {
       >
         <Countdown
           date={Date.now() + 60000 * restTime}
+          key={nanoid()}
           renderer={renderer}
-          // autoStart={false}
         />
         <button
           className="w-36 h-16 px-1 bg-primary text-2xl text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
@@ -155,14 +161,14 @@ export default function StartWorkout() {
             </h1>
           </div>
           {/* Rest time */}
-          <div className="flex justify-center items-center space-x-4 text-xs">
-            <h1>Rest time (min)</h1>
+          <div className="flex justify-center items-center space-x-4 text-base">
+            <h1>Rest time (minute)</h1>
             <input
               type="text"
               name="rest_time"
               value={restTime}
               onChange={handleChange}
-              className="w-10 bg-textSecondary rounded-lg pl-4"
+              className="w-10 h-6 bg-textSecondary rounded-lg pl-4"
             />
           </div>
           <div className="flex justify-center items-center">
