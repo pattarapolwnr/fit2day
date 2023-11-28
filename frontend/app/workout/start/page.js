@@ -30,7 +30,7 @@ export default function StartWorkout() {
 
   const renderer = ({ minutes, seconds, completed }) => {
     if (completed && isRest) {
-      setTimeout(() => setIsRest(false), 5000);
+      setTimeout(() => handleFinishRest(), 3000);
       return (
         <>
           <SoundPlayer src={alarm} />
@@ -178,7 +178,7 @@ export default function StartWorkout() {
               name="rest_time"
               value={restTime}
               onChange={handleChange}
-              className="w-10 h-6 bg-textSecondary rounded-lg pl-4"
+              className="w-14 h-6 bg-textSecondary rounded-lg pl-4"
             />
           </div>
           <div className="flex justify-center items-center">
