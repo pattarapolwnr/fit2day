@@ -16,6 +16,9 @@ import { useReducer } from 'react';
 import exercises_data from '@/data/exercises/exercises';
 import { weights_data } from '@/data/weights/weights_data';
 import { useState } from 'react';
+import { useExerciseContext } from '@/context/ExerciseContext';
+import { nanoid } from 'nanoid';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -98,13 +101,37 @@ const reducer = (state, action) => {
         weightSelected: action.payload,
       };
     case 'add':
-      let newArr = [...state.exercises];
-      newArr.push({
-        ...state.formData,
-        exercise_name: state.selectedOption,
-        weight: state.weightSelected,
-      });
-      return { ...state, exercises: newArr };
+      if (state.formData.reps !== 0 && state.formData.sets !== 0) {
+        let newArr = [...state.exercises];
+        let generatedId = nanoid(3);
+        newArr.push({
+          ...state.formData,
+          id: generatedId,
+          exercise_name: state.selectedOption,
+          weight: state.weightSelected,
+        });
+
+        return { ...state, exercises: newArr };
+      } else {
+        const customId = nanoid();
+        toast.error(
+          'Reps and Sets cannot be 0',
+          {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: 'light',
+          },
+          {
+            toastId: customId,
+          }
+        );
+        return { ...state };
+      }
 
     case 'delete':
       let newArr_del = state.exercises.filter(
@@ -166,6 +193,7 @@ const initialState = {
 export default function Manual() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [openModal, setOpenModal] = useState(false);
+  const { setExercises } = useExerciseContext();
   const muscles_images = [
     'chest.png',
     'shoulder.png',
@@ -451,8 +479,14 @@ export default function Manual() {
           })}
         </div>
         <div className="flex flex-col justify-center items-center mt-12 space-y-4">
-          <Link href={'/workout/plan/start'}>
-            <button className="w-40 h-12 px-4 py-3 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75">
+          <Link href={'/workout/start'}>
+            <button
+              className={
+                'w-40 h-12 px-4 py-3 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75'
+              }
+              onClick={() => setExercises(state.exercises)}
+              disabled={state.exercises.length > 0 ? false : true}
+            >
               Start Workout
             </button>
           </Link>

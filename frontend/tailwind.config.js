@@ -18,6 +18,7 @@ module.exports = {
         secondary: '#A076F9',
         textMain: '#1E1E1E',
         textSecondary: '#D9D9D9',
+        notDoneBox: '#5F5F5F',
       },
     },
   },
