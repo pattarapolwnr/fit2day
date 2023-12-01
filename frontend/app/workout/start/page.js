@@ -126,8 +126,6 @@ export default function StartWorkout() {
   return (
     <>
       {/* Rest Modal */}
-
-      <Notifications />
       <div
         className={
           isRest
