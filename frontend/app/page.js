@@ -43,7 +43,12 @@ export default function Login() {
           <div className="flex flex-row justify-center items-center space-x-4 mb-12">
             <div className="relative">
               <div className="absolute top-2 left-2">
-                <Image src={'/images/google_icon.png'} width={40} height={40} />
+                <Image
+                  src={'/images/google_icon.png'}
+                  width={40}
+                  height={40}
+                  alt="google"
+                />
               </div>
               <button className="border-2 rounded-2xl w-36 text-center border-textSecondary text-gray-500 py-4 pl-14 px-9">
                 Google
@@ -55,6 +60,7 @@ export default function Login() {
                   src={'/images/facebook_icon.png'}
                   width={40}
                   height={40}
+                  alt="facebook"
                 />
               </div>
               <button className="border-2 rounded-2xl w-36 text-center border-textSecondary text-gray-500 py-4 pl-12 px-9">

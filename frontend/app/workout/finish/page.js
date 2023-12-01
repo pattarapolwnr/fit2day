@@ -63,7 +63,12 @@ export default function FinishPage() {
         </div>
         <button className="relative flex flex-col justify-center items-center w-60 h-14 px-1 bg-primary text-sm text-white font-semibold rounded-2xl border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75">
           <div className="absolute top-1 left-5">
-            <Image src={'/images/facebook_icon.png'} width={40} height={40} />
+            <Image
+              src={'/images/facebook_icon.png'}
+              width={40}
+              height={40}
+              alt="facebook"
+            />
           </div>
           <h1 className="ml-9">Share on Facebook</h1>
         </button>

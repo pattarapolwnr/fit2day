@@ -26,6 +26,8 @@ export default function Home() {
           width={475}
           height={360}
           className="absolute top-0 left-0"
+          priority
+          alt="background image"
         />
 
         {/* Content */}
@@ -38,6 +40,7 @@ export default function Home() {
               height={100}
               className="border-4 border-white rounded-full"
               quality={90}
+              alt="profile pic"
             />
             <div className="flex flex-col justify-center items-center text-white space-y-3">
               <h1 className="font-bold text-2xl">John Doe</h1>
