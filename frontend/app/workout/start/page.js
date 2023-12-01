@@ -27,8 +27,10 @@ export default function StartWorkout() {
     setRestTime(event.target.value);
   };
 
-  const soundEffect = new Audio();
-  soundEffect.autoplay = true;
+  if (typeof Audio != 'undefined') {
+    const soundEffect = new Audio();
+    soundEffect.autoplay = true;
+  }
 
   const renderer = ({ minutes, seconds, completed }) => {
     if (completed && isRest) {
