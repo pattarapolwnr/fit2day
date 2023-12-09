@@ -59,7 +59,7 @@ export default function Home() {
                 <h1 className="text-base font-normal">Workout</h1>
               </div>
             </Link>
-            <Link href={'/'}>
+            <Link href={'/diet'}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faUtensils}
