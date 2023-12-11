@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import food_data from '@/data/food/food_data';
 import { useEffect, useState } from 'react';
-import { useFoodListContext } from '/context/FoodlistContext';
+import { useFoodListContext } from '/context/FoodListContext';
 import { useRouter } from 'next/navigation';
 
 const page = ({ params }) => {
