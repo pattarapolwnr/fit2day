@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-import { useFoodListContext } from '@/context/FoodlistContext';
+import { useFoodListContext } from '/context/FoodlistContext';
 import { useEffect, useState } from 'react';
 
 const page = () => {

@@ -1,4 +1,4 @@
-import { FoodListProvider } from '@/context/FoodlistContext';
+import { FoodListProvider } from '/context/FoodlistContext';
 
 export const metadata = {
   title: 'FIT2DAY',
