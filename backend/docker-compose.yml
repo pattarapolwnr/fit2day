@@ -1,0 +1,7 @@
+version: '3'
+services:
+  fit2day_server:
+    container_name: fit2day_server
+    build: .
+    ports:
+      - '8000:8000'
