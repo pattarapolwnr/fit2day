@@ -1,6 +1,8 @@
-import Logo from '@/components/logo';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+"use client";
+
+import Logo from "@/components/logo";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClockRotateLeft,
   faDumbbell,
@@ -8,21 +10,50 @@ import {
   faRankingStar,
   faTableColumns,
   faUtensils,
-} from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import Image from 'next/image';
+} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import Image from "next/image";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export const metadata = {
-  title: 'FIT2DAY',
-};
+// export const metadata = {
+//   title: 'FIT2DAY',
+// };
 
 export default function Home() {
+  const router = useRouter();
+  const [userData, setUserData] = useState({
+    username: "",
+    firstname: "",
+    lastname: "",
+    img: "",
+    objective: "",
+  });
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await axios.get(`${process.env.baseURL}/user`, {
+          withCredentials: true,
+        });
+        setUserData(res.data);
+      } catch (error) {
+        console.log(error);
+        router.push("/");
+      }
+    };
+    getUserData();
+  }, []);
   return (
     <>
+      <Head>
+        <title>FIT2DAY</title>
+      </Head>
       <div className="max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-14 relative">
         {/* Background Image */}
         <Image
-          src={'/images/bg_homescreen.png'}
+          src={"/images/bg_homescreen.png"}
           width={475}
           height={360}
           className="absolute top-0 left-0"
@@ -35,7 +66,9 @@ export default function Home() {
           {/* Head Section */}
           <div className="flex justify-center items-center space-x-4">
             <Image
-              src={'/images/john_doe_pic.png'}
+              src={
+                userData.img !== "" ? userData.img : "/images/users/noimg.png"
+              }
               width={100}
               height={100}
               className="border-4 border-white rounded-full"
@@ -43,63 +76,65 @@ export default function Home() {
               alt="profile pic"
             />
             <div className="flex flex-col justify-center items-center text-white space-y-3">
-              <h1 className="font-bold text-2xl">John Doe</h1>
-              <h1 className="font-light text-base">Gain 2 kg by this year!</h1>
+              <h1 className="font-bold text-lg">
+                {userData.firstname} {userData.lastname}
+              </h1>
+              <h1 className="font-light text-sm">{userData.objective}</h1>
             </div>
           </div>
 
           {/* Menu buttons */}
           <div className="grid grid-cols-2 justify-center content-center gap-4 mt-6">
-            <Link href={'/workout/plan'}>
+            <Link href={"/workout/plan"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faDumbbell}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">Workout</h1>
               </div>
             </Link>
-            <Link href={'/diet'}>
+            <Link href={"/diet"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faUtensils}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">Diet diary</h1>
               </div>
             </Link>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faTableColumns}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">Workout Plan</h1>
               </div>
             </Link>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faClockRotateLeft}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">History</h1>
               </div>
             </Link>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faRankingStar}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">Ranking</h1>
               </div>
             </Link>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faIdCard}
-                  style={{ color: '#6528F7', fontSize: '60px' }}
+                  style={{ color: "#6528F7", fontSize: "60px" }}
                 />
                 <h1 className="text-base font-normal">Profile</h1>
               </div>

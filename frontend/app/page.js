@@ -1,15 +1,15 @@
-'use client';
-import Logo from '@/components/logo';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { nanoid } from 'nanoid';
-import Head from 'next/head';
+"use client";
+import Logo from "@/components/logo";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { nanoid } from "nanoid";
+import Head from "next/head";
 
 export default function Login() {
   const router = useRouter();
@@ -21,11 +21,12 @@ export default function Login() {
   const onSubmit = async (data) => {
     try {
       const response = await fetch(`${process.env.baseURL}/auth/login`, {
-        method: 'POST',
-        mode: 'cors',
+        method: "POST",
+        mode: "cors",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(data),
       });
       if (!response.ok) {
@@ -34,14 +35,14 @@ export default function Login() {
         toast.error(
           data.message,
           {
-            position: 'top-center',
+            position: "top-center",
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: false,
             progress: undefined,
-            theme: 'light',
+            theme: "light",
           },
           {
             toastId: customId,
@@ -49,7 +50,7 @@ export default function Login() {
         );
         return;
       }
-      router.push('/home');
+      router.push("/home");
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +68,7 @@ export default function Login() {
         >
           <div className="relative flex mt-12">
             <div className="absolute left-4 top-4">
-              <FontAwesomeIcon icon={faUser} style={{ fontSize: '24px' }} />
+              <FontAwesomeIcon icon={faUser} style={{ fontSize: "24px" }} />
             </div>
             <div className="flex flex-col justify-center items-center space-y-2">
               <input
@@ -75,13 +76,13 @@ export default function Login() {
                 name="username"
                 placeholder="Username"
                 className="w-72 h-14 bg-textSecondary rounded-lg pl-14 focus:outline-none"
-                {...register('username', {
+                {...register("username", {
                   required: true,
                   maxLength: 20,
                   pattern: {
                     value: /^[a-zA-Z0-9_]{3,20}$/,
                     message:
-                      'Username must be 3-20 characters, with letters, numbers, and underscores.',
+                      "Username must be 3-20 characters, with letters, numbers, and underscores.",
                   },
                 })}
               />
@@ -92,7 +93,7 @@ export default function Login() {
           </div>
           <div className="relative flex mt-8">
             <div className="absolute left-4 top-4">
-              <FontAwesomeIcon icon={faLock} style={{ fontSize: '24px' }} />
+              <FontAwesomeIcon icon={faLock} style={{ fontSize: "24px" }} />
             </div>
             <div className="flex flex-col justify-center items-center space-y-4">
               <input
@@ -100,14 +101,14 @@ export default function Login() {
                 name="password"
                 placeholder="Password"
                 className="w-72 h-14 bg-textSecondary rounded-lg pl-14 focus:outline-none"
-                {...register('password', {
+                {...register("password", {
                   required: true,
                   maxLength: 20,
                   pattern: {
                     value:
                       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                     message:
-                      'Password must be 8+ characters with at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+                      "Password must be 8+ characters with at least one uppercase letter, one lowercase letter, one digit, and one special character.",
                   },
                 })}
               />
@@ -123,7 +124,7 @@ export default function Login() {
             <div className="relative">
               <div className="absolute top-2 left-2">
                 <Image
-                  src={'/images/google_icon.png'}
+                  src={"/images/google_icon.png"}
                   width={40}
                   height={40}
                   alt="google"
@@ -136,7 +137,7 @@ export default function Login() {
             <div className="relative">
               <div className="absolute top-2 left-2">
                 <Image
-                  src={'/images/facebook_icon.png'}
+                  src={"/images/facebook_icon.png"}
                   width={40}
                   height={40}
                   alt="facebook"
@@ -156,7 +157,7 @@ export default function Login() {
             </button>
           </div>
           <div className="flex justify-center items-center my-6">
-            <Link href={'/auth/register'}>
+            <Link href={"/auth/register"}>
               <h1 className="text-textPrimary font-medium">Sign up</h1>
             </Link>
           </div>
