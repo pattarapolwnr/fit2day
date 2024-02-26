@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Logo from '@/components/logo';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Logo from "@/components/logo";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faMagnifyingGlass,
   faUtensils,
   faCirclePlus,
-} from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
-import { nanoid } from 'nanoid';
-import food_data from '@/data/food/food_data';
-import { useEffect, useState } from 'react';
-import { useFoodListContext } from '/context/FoodListContext';
-import { useRouter } from 'next/navigation';
+} from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
+import { nanoid } from "nanoid";
+import food_data from "@/data/food/food_data";
+import { useEffect, useState } from "react";
+import { useFoodListContext } from "/context/FoodListContext";
+import { useRouter } from "next/navigation";
 
 const page = ({ params }) => {
   const {
@@ -40,7 +40,7 @@ const page = ({ params }) => {
 
   const handleAdd = (item) => {
     switch (meal) {
-      case 'breakfast':
+      case "breakfast":
         const newBreakfast = {
           id: nanoid(4),
           eng_name: item.eng_name,
@@ -50,7 +50,7 @@ const page = ({ params }) => {
         setBreakfast(newBreakfastList);
         setTotalCalories((prev) => prev + item.avg_calories);
         break;
-      case 'lunch':
+      case "lunch":
         const newLunch = {
           id: nanoid(4),
           eng_name: item.eng_name,
@@ -60,7 +60,7 @@ const page = ({ params }) => {
         setLunch(newLunchList);
         setTotalCalories((prev) => prev + item.avg_calories);
         break;
-      case 'dinner':
+      case "dinner":
         const newDinner = {
           id: nanoid(4),
           eng_name: item.eng_name,
@@ -71,16 +71,16 @@ const page = ({ params }) => {
         setTotalCalories((prev) => prev + item.avg_calories);
         break;
     }
-    router.push('/diet/food_list');
+    router.push("/diet/food_list");
   };
 
   return (
     <>
-      <div className="relative max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
-        <Link href={'/diet'} className="absolute top-12 left-8">
+      <div className="relative max-w-sm w-96 min-h-[770px] flex flex-col items-center bg-white shadow-2xl rounded-lg py-10">
+        <Link href={"/diet"} className="absolute top-12 left-8">
           <FontAwesomeIcon
             icon={faChevronLeft}
-            style={{ color: '#000', fontSize: '32px' }}
+            style={{ color: "#000", fontSize: "32px" }}
           />
         </Link>
         <Logo />
@@ -91,7 +91,7 @@ const page = ({ params }) => {
           <div className="absolute left-6">
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
-              style={{ color: '#000', fontSize: '20px' }}
+              style={{ color: "#000", fontSize: "20px" }}
             />
           </div>
           <input
@@ -117,13 +117,13 @@ const page = ({ params }) => {
               >
                 <FontAwesomeIcon
                   icon={faUtensils}
-                  style={{ color: '#000', fontSize: '20px' }}
+                  style={{ color: "#000", fontSize: "20px" }}
                 />
                 <p className="w-60 font-light">{item.eng_name}</p>
                 <button onClick={() => handleAdd(item)}>
                   <FontAwesomeIcon
                     icon={faCirclePlus}
-                    style={{ color: '#000', fontSize: '20px' }}
+                    style={{ color: "#000", fontSize: "20px" }}
                   />
                 </button>
               </div>

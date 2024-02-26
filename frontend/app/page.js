@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { nanoid } from "nanoid";
 import Head from "next/head";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Login() {
   const router = useRouter();
@@ -18,6 +20,21 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  useEffect(() => {
+    const getPlanData = async () => {
+      try {
+        const res = await axios.get(`${process.env.baseURL}/user`, {
+          withCredentials: true,
+        });
+        if (res.data.username) {
+          router.push("/home");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPlanData();
+  }, []);
   const onSubmit = async (data) => {
     try {
       const response = await fetch(`${process.env.baseURL}/auth/login`, {
@@ -60,7 +77,7 @@ export default function Login() {
       <Head>
         <title>FIT2DAY</title>
       </Head>
-      <div className="max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-20">
+      <div className="max-w-sm w-96 min-h-[700px] flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-20">
         <Logo />
         <form
           className="flex flex-col items-center"
@@ -118,9 +135,9 @@ export default function Login() {
             </div>
           </div>
           <div className="flex justify-center items-center my-6">
-            <h1 className="text-textPrimary font-medium">Continue with</h1>
+            {/* <h1 className="text-textPrimary font-medium">Continue with</h1> */}
           </div>
-          <div className="flex flex-row justify-center items-center space-x-4 mb-12">
+          {/* <div className="flex flex-row justify-center items-center space-x-4 mb-12">
             <div className="relative">
               <div className="absolute top-2 left-2">
                 <Image
@@ -147,7 +164,7 @@ export default function Login() {
                 Facebook
               </button>
             </div>
-          </div>
+          </div> */}
           <div className="flex justify-center items-center">
             <button
               type="submit"

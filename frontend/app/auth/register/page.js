@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import Logo from '@/components/logo';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { nanoid } from 'nanoid';
+import Logo from "@/components/logo";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faLock,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { nanoid } from "nanoid";
 
 export default function Register() {
   const router = useRouter();
@@ -21,10 +25,10 @@ export default function Register() {
   const onSubmit = async (data) => {
     try {
       const response = await fetch(`${process.env.baseURL}/auth/register`, {
-        method: 'POST',
-        mode: 'cors',
+        method: "POST",
+        mode: "cors",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
@@ -34,14 +38,14 @@ export default function Register() {
         toast.error(
           data.message,
           {
-            position: 'top-center',
+            position: "top-center",
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: false,
             progress: undefined,
-            theme: 'light',
+            theme: "light",
           },
           {
             toastId: customId,
@@ -49,16 +53,22 @@ export default function Register() {
         );
         return;
       }
-      alert('Succesfully register!');
-      router.push('/');
+      alert("Succesfully register!");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <>
-      <div className="max-w-sm w-96 flex flex-col justify-center bg-white shadow-2xl rounded-lg py-10 lg:my-4">
+      <div className="max-w-sm w-96 relative flex flex-col justify-center bg-white shadow-2xl rounded-lg py-10 lg:my-4">
         <Logo />
+        <Link href={"/"} className="absolute top-12 left-8">
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            style={{ color: "#000", fontSize: "32px" }}
+          />
+        </Link>
         <div className="flex">
           <h1 className="text-xl text-left text-textMain mt-8 ml-16">
             Create Account
@@ -74,13 +84,13 @@ export default function Register() {
               name="firstname"
               placeholder="First Name"
               className="w-72 h-10 bg-textSecondary rounded-lg pl-8 focus:outline-none"
-              {...register('firstname', {
+              {...register("firstname", {
                 required: true,
                 maxLength: 20,
                 pattern: {
                   value: /^[A-Za-z]+([- ][A-Za-z]+)*$/,
                   message:
-                    'Enter a valid name with only letters, spaces, or hyphens.',
+                    "Enter a valid name with only letters, spaces, or hyphens.",
                 },
               })}
             />
@@ -94,13 +104,13 @@ export default function Register() {
               name="lastname"
               placeholder="Last Name"
               className="w-72 h-10 bg-textSecondary rounded-lg pl-8 focus:outline-none"
-              {...register('lastname', {
+              {...register("lastname", {
                 required: true,
                 maxLength: 20,
                 pattern: {
                   value: /^[A-Za-z]+([- ][A-Za-z]+)*$/,
                   message:
-                    'Enter a valid name with only letters, spaces, or hyphens.',
+                    "Enter a valid name with only letters, spaces, or hyphens.",
                 },
               })}
             />
@@ -114,11 +124,11 @@ export default function Register() {
               name="email"
               placeholder="Email"
               className="w-72 h-10 bg-textSecondary rounded-lg pl-8 focus:outline-none"
-              {...register('email', {
+              {...register("email", {
                 required: true,
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: 'Enter a valid email address.',
+                  message: "Enter a valid email address.",
                 },
               })}
             />
@@ -132,13 +142,13 @@ export default function Register() {
               name="username"
               placeholder="Username"
               className="w-72 h-10 bg-textSecondary rounded-lg pl-8 focus:outline-none"
-              {...register('username', {
+              {...register("username", {
                 required: true,
                 maxLength: 20,
                 pattern: {
                   value: /^[a-zA-Z0-9_]{3,20}$/,
                   message:
-                    'Username must be 3-20 characters, with letters, numbers, and underscores.',
+                    "Username must be 3-20 characters, with letters, numbers, and underscores.",
                 },
               })}
             />
@@ -146,20 +156,20 @@ export default function Register() {
               {errors.username && <p>{errors.username.message}</p>}
             </div>
           </div>
-          <div className="relative flex flex-col justify-center items-center space-y-5 mt-6 mb-10">
+          <div className="relative flex flex-col justify-center items-center space-y-5 mt-6 mb-6">
             <input
               type="password"
               name="password"
               placeholder="Password"
               className="w-72 h-10 bg-textSecondary rounded-lg pl-8 focus:outline-none"
-              {...register('password', {
+              {...register("password", {
                 required: true,
                 maxLength: 20,
                 pattern: {
                   value:
                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                   message:
-                    'Password must be 8+ characters with at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+                    "Password must be 8+ characters with at least one uppercase letter, one lowercase letter, one digit, and one special character.",
                 },
               })}
             />
@@ -175,7 +185,7 @@ export default function Register() {
               Register
             </button>
           </div>
-          <div className="flex justify-center items-center my-5">
+          {/* <div className="flex justify-center items-center my-5">
             <h1 className="text-textPrimary font-medium">Or</h1>
           </div>
           <div className="flex flex-row justify-center items-center space-x-4">
@@ -205,7 +215,7 @@ export default function Register() {
                 Facebook
               </button>
             </div>
-          </div>
+          </div> */}
         </form>
       </div>
     </>

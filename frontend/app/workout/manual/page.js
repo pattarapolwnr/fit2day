@@ -1,28 +1,31 @@
-'use client';
+"use client";
 
-import Logo from '@/components/logo';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Logo from "@/components/logo";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretRight,
   faCaretLeft,
   faEdit,
   faTrash,
   faXmark,
-} from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useReducer } from 'react';
-import exercises_data from '@/data/exercises/exercises';
-import { weights_data } from '@/data/weights/weights_data';
-import { useState } from 'react';
-import { useExerciseContext } from '@/context/ExerciseContext';
-import { nanoid } from 'nanoid';
-import { toast } from 'react-toastify';
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import Image from "next/image";
+import { useReducer } from "react";
+import exercises_data from "@/data/exercises/exercises";
+import { weights_data } from "@/data/weights/weights_data";
+import { useState, useEffect } from "react";
+import { useExerciseContext } from "@/context/ExerciseContext";
+import { nanoid } from "nanoid";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'next':
+    case "next":
       if (state.currentIndex + 1 <= 6) {
         return {
           ...state,
@@ -32,8 +35,8 @@ const reducer = (state, action) => {
             exercises_data[state.currentIndex + 1].exercises[0].name,
           exercises: [...state.exercises],
           formData: {
-            exercise_name: '',
-            weightSelected: '',
+            exercise_name: "",
+            weightSelected: "",
             reps: 0,
             sets: 0,
           },
@@ -46,15 +49,15 @@ const reducer = (state, action) => {
           selectedOption: exercises_data[0].exercises[0].name,
           exercises: [...state.exercises],
           formData: {
-            exercise_name: '',
-            weightSelected: '',
+            exercise_name: "",
+            weightSelected: "",
             reps: 0,
             sets: 0,
           },
         };
       }
 
-    case 'back':
+    case "back":
       if (state.currentIndex - 1 >= 0) {
         return {
           ...state,
@@ -64,8 +67,8 @@ const reducer = (state, action) => {
             exercises_data[state.currentIndex - 1].exercises[0].name,
           exercises: [...state.exercises],
           formData: {
-            exercise_name: '',
-            weightSelected: '',
+            exercise_name: "",
+            weightSelected: "",
             reps: 0,
             sets: 0,
           },
@@ -78,29 +81,29 @@ const reducer = (state, action) => {
           selectedOption: exercises_data[6].exercises[0].name,
           exercises: [...state.exercises],
           formData: {
-            exercise_name: '',
-            weightSelected: '',
+            exercise_name: "",
+            weightSelected: "",
             reps: 0,
             sets: 0,
           },
         };
       }
-    case 'handle form input':
+    case "handle form input":
       return {
         ...state,
         formData: { ...state.formData, [action.field]: action.payload },
       };
-    case 'handle select option':
+    case "handle select option":
       return {
         ...state,
         selectedOption: action.payload,
       };
-    case 'handle weight select':
+    case "handle weight select":
       return {
         ...state,
         weightSelected: action.payload,
       };
-    case 'add':
+    case "add":
       if (state.formData.reps !== 0 && state.formData.sets !== 0) {
         let newArr = [...state.exercises];
         let generatedId = nanoid(3);
@@ -115,16 +118,16 @@ const reducer = (state, action) => {
       } else {
         const customId = nanoid();
         toast.error(
-          'Reps and Sets cannot be 0',
+          "Reps and Sets cannot be 0",
           {
-            position: 'top-center',
+            position: "top-center",
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: false,
             progress: undefined,
-            theme: 'light',
+            theme: "light",
           },
           {
             toastId: customId,
@@ -133,28 +136,28 @@ const reducer = (state, action) => {
         return { ...state };
       }
 
-    case 'delete':
+    case "delete":
       let newArr_del = state.exercises.filter(
         (item) => item.exercise_name !== action.payload
       );
       return { ...state, exercises: newArr_del };
-    case 'edit':
+    case "edit":
       return {
         ...state,
         editFormData: action.payload,
         weightEditSelected: action.payload.weight,
       };
-    case 'handle edit form input':
+    case "handle edit form input":
       return {
         ...state,
         editFormData: { ...state.editFormData, [action.field]: action.payload },
       };
-    case 'handle edit weight select':
+    case "handle edit weight select":
       return {
         ...state,
         weightEditSelected: action.payload,
       };
-    case 'save edit':
+    case "save edit":
       let originalArr = [...state.exercises];
       let index = originalArr.findIndex(
         (obj) => obj.exercise_name === state.editFormData.exercise_name
@@ -172,20 +175,20 @@ const initialState = {
   currentIndex: 0,
   exercises_list: exercises_data[0].exercises,
   formData: {
-    exercise_name: '',
-    weight: '',
+    exercise_name: "",
+    weight: "",
     reps: 0,
     sets: 0,
   },
   editFormData: {
-    exercise_name: '',
-    weight: '',
+    exercise_name: "",
+    weight: "",
     reps: 0,
     sets: 0,
   },
-  selectedOption: 'Bench Press',
-  weightSelected: '2.5kg',
-  weightEditSelected: '',
+  selectedOption: "Bench Press",
+  weightSelected: "2.5kg",
+  weightEditSelected: "",
   exercises: [],
   editModal: false,
 };
@@ -194,20 +197,21 @@ export default function Manual() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [openModal, setOpenModal] = useState(false);
   const { setExercises } = useExerciseContext();
+  const router = useRouter();
   const muscles_images = [
-    'chest.png',
-    'shoulder.png',
-    'tricep.png',
-    'back.png',
-    'bicep.png',
-    'abs.png',
-    'leg.png',
+    "chest.png",
+    "shoulder.png",
+    "tricep.png",
+    "back.png",
+    "bicep.png",
+    "abs.png",
+    "leg.png",
   ];
 
   //handle form
   const handleChange = (event) => {
     dispatch({
-      type: 'handle form input',
+      type: "handle form input",
       field: event.target.name,
       payload: event.target.value,
     });
@@ -215,14 +219,14 @@ export default function Manual() {
 
   const handleDropdownChange = (event) => {
     dispatch({
-      type: 'handle select option',
+      type: "handle select option",
       payload: event.target.value,
     });
   };
 
   const handleWeightChange = (event) => {
     dispatch({
-      type: 'handle weight select',
+      type: "handle weight select",
       payload: event.target.value,
     });
   };
@@ -230,7 +234,7 @@ export default function Manual() {
   // Modal form
   const handleEditChange = (event) => {
     dispatch({
-      type: 'handle edit form input',
+      type: "handle edit form input",
       field: event.target.name,
       payload: event.target.value,
     });
@@ -238,30 +242,44 @@ export default function Manual() {
 
   const handleEditWeightChange = (event) => {
     dispatch({
-      type: 'handle edit weight select',
+      type: "handle edit weight select",
       payload: event.target.value,
     });
   };
+
+  useEffect(() => {
+    const checkAuthenticated = async () => {
+      try {
+        const res = await axios.get(`${process.env.baseURL}/user`, {
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.log(error);
+        router.push("/");
+      }
+    };
+    checkAuthenticated();
+  }, []);
 
   return (
     <>
       <div
         className={
           openModal
-            ? 'max-w-sm w-96 h-[800px] flex flex-col justify-center items-center bg-black opacity-50 shadow-2xl rounded-lg py-10 absolute z-10'
-            : 'hidden'
+            ? "max-w-sm w-96 h-[800px] flex flex-col justify-center items-center bg-black opacity-50 shadow-2xl rounded-lg py-10 absolute z-10"
+            : "hidden"
         }
       ></div>
       <div
         className={
           openModal
-            ? 'flex flex-col justify-center items-center w-80 h-72 shadow-xl space-y-6 bg-white z-20 absolute'
-            : 'hidden'
+            ? "flex flex-col justify-center items-center w-80 h-72 shadow-xl space-y-6 bg-white z-20 absolute"
+            : "hidden"
         }
       >
         <div className="absolute top-5 right-5">
           <button onClick={() => setOpenModal(false)}>
-            <FontAwesomeIcon icon={faXmark} style={{ fontSize: '20px' }} />
+            <FontAwesomeIcon icon={faXmark} style={{ fontSize: "20px" }} />
           </button>
         </div>
         <h1 className="font-medium">Edit Exercises</h1>
@@ -321,14 +339,20 @@ export default function Manual() {
         <button
           className="w-20 h-8 px-1 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
           onClick={() => {
-            dispatch({ type: 'save edit' });
+            dispatch({ type: "save edit" });
             setOpenModal(false);
           }}
         >
           Edit
         </button>
       </div>
-      <div className="max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
+      <div className="relative max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
+        <Link href={"/workout/plan"} className="absolute top-12 left-8">
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            style={{ color: "#000", fontSize: "32px" }}
+          />
+        </Link>
         <Logo />
         <div className="flex w-96">
           <h1 className="font-semibold border-b-2 border-primary text-left w-fit ml-16 mt-8">
@@ -353,23 +377,23 @@ export default function Manual() {
             <button
               className="absolute top-8 left-36"
               onClick={() => {
-                dispatch({ type: 'next' });
+                dispatch({ type: "next" });
               }}
             >
               <FontAwesomeIcon
                 icon={faCaretRight}
-                style={{ color: '#6528F7', fontSize: '50px' }}
+                style={{ color: "#6528F7", fontSize: "50px" }}
               />
             </button>
             <button
               className="absolute top-8 right-36"
               onClick={() => {
-                dispatch({ type: 'back' });
+                dispatch({ type: "back" });
               }}
             >
               <FontAwesomeIcon
                 icon={faCaretLeft}
-                style={{ color: '#6528F7', fontSize: '50px' }}
+                style={{ color: "#6528F7", fontSize: "50px" }}
               />
             </button>
           </div>
@@ -427,7 +451,7 @@ export default function Manual() {
           </div>
           <button
             className="w-20 h-8 px-1 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
-            onClick={() => dispatch({ type: 'add' })}
+            onClick={() => dispatch({ type: "add" })}
           >
             Add
           </button>
@@ -452,25 +476,25 @@ export default function Manual() {
                   <button
                     onClick={() => {
                       setOpenModal(true);
-                      dispatch({ type: 'edit', payload: item });
+                      dispatch({ type: "edit", payload: item });
                     }}
                   >
                     <FontAwesomeIcon
                       icon={faEdit}
-                      style={{ color: '#A076F9', fontSize: '20px' }}
+                      style={{ color: "#A076F9", fontSize: "20px" }}
                     />
                   </button>
                   <button
                     onClick={() =>
                       dispatch({
-                        type: 'delete',
+                        type: "delete",
                         payload: `${item.exercise_name}`,
                       })
                     }
                   >
                     <FontAwesomeIcon
                       icon={faTrash}
-                      style={{ color: '#A076F9', fontSize: '20px' }}
+                      style={{ color: "#A076F9", fontSize: "20px" }}
                     />
                   </button>
                 </div>
@@ -479,10 +503,10 @@ export default function Manual() {
           })}
         </div>
         <div className="flex flex-col justify-center items-center mt-12 space-y-4">
-          <Link href={'/workout/start'}>
+          <Link href={"/workout/start"}>
             <button
               className={
-                'w-40 h-12 px-4 py-3 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75'
+                "w-40 h-12 px-4 py-3 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
               }
               onClick={() => setExercises(state.exercises)}
               disabled={state.exercises.length > 0 ? false : true}

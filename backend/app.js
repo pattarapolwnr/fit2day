@@ -6,6 +6,9 @@ const cookieParser = require("cookie-parser");
 // const bcrypt = require('bcrypt');
 const authRoutes = require("./src/routes/auth");
 const userRoutes = require("./src/routes/user");
+const planRoutes = require("./src/routes/plan");
+const historyRoutes = require("./src/routes/history");
+const rankingRoutes = require("./src/routes/ranking");
 const mongoose = require("mongoose");
 const { config } = require("./config/config");
 
@@ -37,6 +40,15 @@ app.use("/auth", authRoutes);
 
 // Use user routes
 app.use("/user", userRoutes);
+
+// Use workout plan routes
+app.use("/plan", planRoutes);
+
+// Use workout plan routes
+app.use("/history", historyRoutes);
+
+// User ranking routes
+app.use("/ranking", rankingRoutes);
 
 const port = 8000;
 

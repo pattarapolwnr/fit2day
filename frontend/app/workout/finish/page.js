@@ -1,13 +1,27 @@
-'use client';
-import Logo from '@/components/logo';
-import { useExerciseContext } from '@/context/ExerciseContext';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import Logo from "@/components/logo";
+import { useExerciseContext } from "@/context/ExerciseContext";
+import Image from "next/image";
+import Link from "next/link";
+import axios from "axios";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function FinishPage() {
-  const { exerciseData, startTime } = useExerciseContext();
+  const { exerciseData, startTime, planName } = useExerciseContext();
   const endTime = new Date();
   const timeElapsed = msToHMS(endTime - startTime);
+  const router = useRouter();
+
+  const calculatePoints = (startTime, endTime) => {
+    const timeElapsed = endTime - startTime;
+    let seconds = timeElapsed / 1000;
+    // Half an hour gets 10 points
+    const points = parseInt((seconds / 1800) * 10);
+    return points;
+  };
+
+  const points = calculatePoints(startTime, endTime);
 
   function msToHMS(ms) {
     // 1- Convert to seconds:
@@ -20,12 +34,35 @@ export default function FinishPage() {
     // 4- Keep only seconds not extracted to minutes:
     seconds = Math.round(seconds % 60);
     // Format with leading zeros
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   }
+
+  useEffect(() => {
+    const saveWorkoutHistory = async () => {
+      try {
+        const res = await axios.post(
+          `${process.env.baseURL}/history/workout`,
+          {
+            data: {
+              plan_name: planName,
+              duration: timeElapsed,
+              exercises: exerciseData,
+              points: points,
+            },
+          },
+          { withCredentials: true }
+        );
+      } catch (error) {
+        console.log(error);
+        router.push("/");
+      }
+    };
+    saveWorkoutHistory();
+  }, []);
 
   return (
     <>
@@ -64,7 +101,7 @@ export default function FinishPage() {
         <button className="relative flex flex-col justify-center items-center w-60 h-14 px-1 bg-primary text-sm text-white font-semibold rounded-2xl border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75">
           <div className="absolute top-1 left-5">
             <Image
-              src={'/images/facebook_icon.png'}
+              src={"/images/facebook_icon.png"}
               width={40}
               height={40}
               alt="facebook"
@@ -72,7 +109,7 @@ export default function FinishPage() {
           </div>
           <h1 className="ml-9">Share on Facebook</h1>
         </button>
-        <Link href={'/home'} className="my-10">
+        <Link href={"/home"} className="my-10">
           Back to Home
         </Link>
       </div>

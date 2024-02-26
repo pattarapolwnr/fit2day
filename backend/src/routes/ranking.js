@@ -5,15 +5,8 @@ const User = require("../models/user");
 
 router.get("/", authorization, async (req, res, next) => {
   const user_id = req.user_id;
-  const user = await User.findById(user_id);
-  const response_data = {
-    user_id: user._id,
-    firstname: user.firstname,
-    lastname: user.lastname,
-    objective: user.objective,
-    img: user.img,
-  };
-  return res.status(200).json(response_data);
+  const user = await User.find().sort({ points: -1 });
+  return res.status(200).json(user);
 });
 
 module.exports = router;

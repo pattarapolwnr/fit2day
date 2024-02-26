@@ -1,15 +1,16 @@
-'use client';
-import Logo from '@/components/logo';
-import { useExerciseContext } from '@/context/ExerciseContext';
-import { nanoid } from 'nanoid';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect, useRef } from 'react';
-import Countdown, { zeroPad } from 'react-countdown';
+"use client";
+import Logo from "@/components/logo";
+import { useExerciseContext } from "@/context/ExerciseContext";
+import { nanoid } from "nanoid";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import Countdown, { zeroPad } from "react-countdown";
+import axios from "axios";
 
 export default function StartWorkout() {
   const router = useRouter();
-  const alarm = '/sound/alarm.mp3';
+  const alarm = "/sound/alarm.mp3";
   const { exerciseData, setStartTime } = useExerciseContext();
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -52,8 +53,19 @@ export default function StartWorkout() {
     const soundEffect = new Audio();
     soundEffect.autoplay = true;
     soundEffect.src =
-      'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+      "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
     setAudio(soundEffect);
+    const checkAuthenticated = async () => {
+      try {
+        const res = await axios.get(`${process.env.baseURL}/user`, {
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.log(error);
+        router.push("/");
+      }
+    };
+    checkAuthenticated();
   }, []);
 
   useEffect(() => {
@@ -82,7 +94,7 @@ export default function StartWorkout() {
 
   const handleFinishRest = () => {
     audio.src =
-      'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+      "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
     setIsRest(false);
     if (currentSet + 1 <= maxSet) {
       setCurrentSet((prev) => prev + 1);
@@ -92,7 +104,7 @@ export default function StartWorkout() {
         setCurrentExercise(exerciseData[currentExerciseIndex + 1]);
         setCurrentSet(1);
       } else {
-        router.push('/workout/finish');
+        router.push("/workout/finish");
       }
     }
   };
@@ -125,15 +137,15 @@ export default function StartWorkout() {
       <div
         className={
           isRest
-            ? 'max-w-sm w-96 h-screen flex flex-col justify-center items-center bg-black opacity-50 shadow-2xl rounded-lg py-10 absolute z-20'
-            : 'hidden'
+            ? "max-w-sm w-96 h-screen flex flex-col justify-center items-center bg-black opacity-50 shadow-2xl rounded-lg py-10 absolute z-20"
+            : "hidden"
         }
       ></div>
       <div
         className={
           isRest
-            ? 'max-w-sm w-96 h-screen flex flex-col justify-center items-center rounded-lg py-10 absolute z-30 space-y-6'
-            : 'hidden'
+            ? "max-w-sm w-96 h-screen flex flex-col justify-center items-center rounded-lg py-10 absolute z-30 space-y-6"
+            : "hidden"
         }
       >
         <Countdown
@@ -152,7 +164,7 @@ export default function StartWorkout() {
       <div className="max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
         <Logo />
         <Image
-          src={'/images/exercises/bench_press.jpg'}
+          src={"/images/exercises/bench_press.jpg"}
           width={300}
           height={300}
           quality={85}

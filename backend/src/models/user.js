@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     img: { type: String, required: false },
     objective: { type: String, required: false },
+    points: { type: Number, required: false },
   },
   { timestamps: true }
 );

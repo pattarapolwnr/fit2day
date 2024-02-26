@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import Logo from '@/components/logo';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useFoodListContext } from '/context/FoodListContext';
+import Logo from "@/components/logo";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useFoodListContext } from "/context/FoodListContext";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const page = ({ params }) => {
   const {
@@ -14,28 +16,30 @@ const page = ({ params }) => {
     setLunch,
     dinner,
     setDinner,
+    totalCalories,
     setTotalCalories,
   } = useFoodListContext();
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
+  const router = useRouter();
 
-  today = dd + '/' + mm + '/' + yyyy;
+  today = dd + "/" + mm + "/" + yyyy;
 
   const handleDelete = (meal, id, calories) => {
     switch (meal) {
-      case 'breakfast':
+      case "breakfast":
         let newBreakfastList = breakfast.filter((item) => item.id !== id);
         setBreakfast(newBreakfastList);
         setTotalCalories((prev) => prev - calories);
         break;
-      case 'lunch':
+      case "lunch":
         let newLunchList = lunch.filter((item) => item.id !== id);
         setLunch(newLunchList);
         setTotalCalories((prev) => prev - calories);
         break;
-      case 'dinner':
+      case "dinner":
         let newDinnerList = dinner.filter((item) => item.id !== id);
         setDinner(newDinnerList);
         setTotalCalories((prev) => prev - calories);
@@ -43,13 +47,34 @@ const page = ({ params }) => {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      const res = await axios.put(
+        `${process.env.baseURL}/history/diet`,
+        {
+          data: {
+            totalCalories: totalCalories,
+            breakfast: breakfast,
+            lunch: lunch,
+            dinner: dinner,
+          },
+        },
+        { withCredentials: true }
+      );
+      router.push("/diet");
+    } catch (error) {
+      console.log(error);
+      router.push("/diet");
+    }
+  };
+
   return (
     <>
-      <div className="relative max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
-        <Link href={'/diet'} className="absolute top-12 left-8">
+      <div className="relative max-w-sm w-96 h-[770px] flex flex-col items-center bg-white shadow-2xl rounded-lg py-10">
+        <Link href={"/diet"} className="absolute top-12 left-8">
           <FontAwesomeIcon
             icon={faChevronLeft}
-            style={{ color: '#000', fontSize: '32px' }}
+            style={{ color: "#000", fontSize: "32px" }}
           />
         </Link>
         <Logo />
@@ -72,12 +97,12 @@ const page = ({ params }) => {
                 <p>{item.calories} cal</p>
                 <button
                   onClick={() =>
-                    handleDelete('breakfast', item.id, item.calories)
+                    handleDelete("breakfast", item.id, item.calories)
                   }
                 >
                   <FontAwesomeIcon
                     icon={faTrash}
-                    style={{ color: '#000', fontSize: '20px' }}
+                    style={{ color: "#000", fontSize: "20px" }}
                   />
                 </button>
               </div>
@@ -99,11 +124,11 @@ const page = ({ params }) => {
                 <p className="w-48 font-light">{item.eng_name}</p>
                 <p>{item.calories} cal</p>
                 <button
-                  onClick={() => handleDelete('lunch', item.id, item.calories)}
+                  onClick={() => handleDelete("lunch", item.id, item.calories)}
                 >
                   <FontAwesomeIcon
                     icon={faTrash}
-                    style={{ color: '#000', fontSize: '20px' }}
+                    style={{ color: "#000", fontSize: "20px" }}
                   />
                 </button>
               </div>
@@ -125,16 +150,26 @@ const page = ({ params }) => {
                 <p className="w-48 font-light">{item.eng_name}</p>
                 <p>{item.calories} cal</p>
                 <button
-                  onClick={() => handleDelete('dinner', item.id, item.calories)}
+                  onClick={() => handleDelete("dinner", item.id, item.calories)}
                 >
                   <FontAwesomeIcon
                     icon={faTrash}
-                    style={{ color: '#000', fontSize: '20px' }}
+                    style={{ color: "#000", fontSize: "20px" }}
                   />
                 </button>
               </div>
             );
           })}
+        </div>
+        <div className="flex justify-center items-center mt-16">
+          <button
+            className={
+              "w-28 h-12 px-4 py-3 bg-primary text-white font-semibold rounded-md border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
+            }
+            onClick={handleSave}
+          >
+            Save
+          </button>
         </div>
       </div>
     </>
