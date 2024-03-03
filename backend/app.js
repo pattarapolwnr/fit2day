@@ -9,6 +9,7 @@ const userRoutes = require("./src/routes/user");
 const planRoutes = require("./src/routes/plan");
 const historyRoutes = require("./src/routes/history");
 const rankingRoutes = require("./src/routes/ranking");
+const profileRoutes = require("./src/routes/profile");
 const mongoose = require("mongoose");
 const { config } = require("./config/config");
 
@@ -49,6 +50,9 @@ app.use("/history", historyRoutes);
 
 // User ranking routes
 app.use("/ranking", rankingRoutes);
+
+// User profile routes
+app.use("/profile", profileRoutes);
 
 const port = 8000;
 

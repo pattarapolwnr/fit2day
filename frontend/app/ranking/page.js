@@ -131,7 +131,7 @@ export default function Home() {
                 {index === 0 && (
                   <FontAwesomeIcon
                     icon={faTrophy}
-                    style={{ color: "#FFEA00", fontSize: "32px" }}
+                    style={{ color: "#6528F7", fontSize: "32px" }}
                   />
                 )}
               </div>

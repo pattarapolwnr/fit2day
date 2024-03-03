@@ -1,6 +1,4 @@
 "use client";
-
-import Logo from "@/components/logo";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Image from "next/image";
-import { experimental_useEffectEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -56,7 +54,6 @@ export default function Home() {
           priority
           alt="background image"
         />
-
         {/* Content */}
         <div className="w-full flex flex-col justify-center items-center z-10">
           {/* Head Section */}
@@ -65,7 +62,7 @@ export default function Home() {
               src={userData.img ? userData.img : "/images/users/noimg.png"}
               width={100}
               height={100}
-              className="border-4 border-white rounded-full"
+              className="border-4 border-white rounded-full w-[100px] h-[100px] object-fill"
               quality={90}
               alt="profile pic"
             />
@@ -74,7 +71,7 @@ export default function Home() {
                 {userData.firstname} {userData.lastname}
               </h1>
               <h1 className="font-light text-sm">
-                {userData.object !== "" ? userData.objective : ""}
+                {userData.objective !== "" ? userData.objective : ""}
               </h1>
             </div>
           </div>
@@ -126,7 +123,7 @@ export default function Home() {
                 <h1 className="text-base font-normal">Ranking</h1>
               </div>
             </Link>
-            <Link href={"/"}>
+            <Link href={"/profile"}>
               <div className="w-36 h-36 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center space-y-2">
                 <FontAwesomeIcon
                   icon={faIdCard}
