@@ -37,7 +37,7 @@ const page = () => {
   return (
     <>
       <div className="relative max-w-sm w-96 min-h-[770px] flex flex-col justify-start items-center bg-white shadow-2xl rounded-lg py-10">
-        <Link href={"/history"} className="absolute top-12 left-8">
+        <Link href={"/history/diet"} className="absolute top-12 left-8">
           <FontAwesomeIcon
             icon={faChevronLeft}
             style={{ color: "#000", fontSize: "32px" }}

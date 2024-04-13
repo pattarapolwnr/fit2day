@@ -66,6 +66,7 @@ export default function Plan() {
     };
     getPlanData();
   }, []);
+
   return (
     <>
       <div className=" relative max-w-sm w-96 flex flex-col justify-center bg-white shadow-2xl rounded-lg py-20">

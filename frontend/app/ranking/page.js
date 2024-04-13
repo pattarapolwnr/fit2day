@@ -83,7 +83,7 @@ export default function Home() {
               src={userData.img ? userData.img : "/images/users/noimg.png"}
               width={80}
               height={80}
-              className="absolute border-4 border-white rounded-full top-3 left-2"
+              className="absolute border-4 border-white rounded-full top-3 left-2 w-[80px] h-[80px] object-fill"
               quality={90}
               alt="profile pic"
             />
@@ -113,7 +113,7 @@ export default function Home() {
                   src={item.img ? item.img : "/images/users/noimg.png"}
                   width={70}
                   height={70}
-                  className="border-4 border-white rounded-full"
+                  className="border-4 border-white rounded-full w-[70px] h-[70px] object-fill"
                   quality={90}
                   alt="profile pic"
                 />

@@ -18,6 +18,7 @@ router.post("/register", async (req, res) => {
       firstname,
       lastname,
       email,
+      img: "/images/users/noimg.png",
     });
     await newUser.save();
 
@@ -52,6 +53,13 @@ router.post("/login", async (req, res, next) => {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+router.get("/logout", (req, res) => {
+  return res
+    .clearCookie("token")
+    .status(200)
+    .json({ message: "Logout successfully!" });
 });
 
 module.exports = router;

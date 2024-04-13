@@ -50,6 +50,17 @@ export default function Home() {
     };
     getUserData();
   }, []);
+
+  const logOut = async () => {
+    try {
+      const res = await axios.get(`${process.env.baseURL}/auth/logout`, {
+        withCredentials: true,
+      });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="max-w-sm w-96 min-h-[770px] flex flex-col justify-start items-center bg-white shadow-2xl rounded-lg py-14 relative">
@@ -209,6 +220,13 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+
+            <button
+              className="mt-8 w-32 h-12 px-4 py-3 bg-secondary text-white font-semibold rounded-md border-2 border-secondary hover:bg-white hover:text-secondary ease-in-out delay-75"
+              onClick={logOut}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>

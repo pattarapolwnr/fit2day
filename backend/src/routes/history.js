@@ -18,7 +18,9 @@ router.post("/workout", authorization, async (req, res) => {
       exercises: exercises,
     });
     await newWorkoutHistory.save();
-    const user = await User.findByIdAndUpdate(user_id, { points: points });
+    const user = await User.findByIdAndUpdate(user_id, {
+      $inc: { points: points },
+    });
     return res
       .status(200)
       .json({ message: "Create workout history successfully!" });

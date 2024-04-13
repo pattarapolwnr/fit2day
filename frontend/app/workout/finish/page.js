@@ -6,6 +6,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { FacebookShare } from "react-share-kit";
 
 export default function FinishPage() {
   const { exerciseData, startTime, planName } = useExerciseContext();
@@ -67,7 +68,7 @@ export default function FinishPage() {
   return (
     <>
       {/* Normal Content */}
-      <div className="max-w-sm w-96 flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
+      <div className="max-w-sm w-96 min-h-[770px] flex flex-col justify-center items-center bg-white shadow-2xl rounded-lg py-10">
         <Logo />
         <h1 className="font-extrabold text-3xl my-10">Congratulations!</h1>
         <h1 className="font-extrabold text-2xl mb-10 text-secondary">
@@ -98,18 +99,27 @@ export default function FinishPage() {
             );
           })}
         </div>
-        <button className="relative flex flex-col justify-center items-center w-60 h-14 px-1 bg-primary text-sm text-white font-semibold rounded-2xl border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75">
-          <div className="absolute top-1 left-5">
+        {/* <button className="relative flex justify-center items-center w-60 h-14 px-1 bg-primary text-sm text-white font-semibold rounded-2xl border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75">
+          <div className="flex top-1 left-5">
             <Image
               src={"/images/facebook_icon.png"}
               width={40}
               height={40}
               alt="facebook"
             />
+            
           </div>
           <h1 className="ml-9">Share on Facebook</h1>
-        </button>
-        <Link href={"/home"} className="my-10">
+        </button> */}
+        <FacebookShare
+          url={"https://fit2day.vercel.app"}
+          quote={"I have completed these exercises via Fit2day App."}
+          hashtag={"#Fit2day"}
+        />
+        <Link
+          href={"/home"}
+          className="my-10 flex justify-center items-center w-40 h-14 px-1 bg-primary text-sm text-white font-semibold rounded-2xl border-2 border-primary hover:bg-white hover:text-primary ease-in-out delay-75"
+        >
           Back to Home
         </Link>
       </div>
