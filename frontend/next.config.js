@@ -6,5 +6,5 @@ const nextConfig = {
       "https://ec2-54-206-21-106.ap-southeast-2.compute.amazonaws.com:443",
   },
 };
-ß;
+
 module.exports = nextConfig;
