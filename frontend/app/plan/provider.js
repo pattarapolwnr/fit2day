@@ -1,5 +1,5 @@
 "use client";
-import { PlanProvider } from "@/context/planContext";
+import { PlanProvider } from "@/context/PlanContext";
 
 export function Providers({ children }) {
   return (

@@ -17,7 +17,7 @@ import { useEffect, useReducer } from "react";
 import exercises_data from "@/data/exercises/exercises";
 import { weights_data } from "@/data/weights/weights_data";
 import { useState } from "react";
-import { usePlanContext } from "@/context/planContext";
+import { usePlanContext } from "@/context/PlanContext";
 import { nanoid } from "nanoid";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";

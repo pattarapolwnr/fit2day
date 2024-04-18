@@ -3,7 +3,7 @@ import Logo from "@/components/logo";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { usePlanContext } from "@/context/planContext";
+import { usePlanContext } from "@/context/PlanContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
