@@ -54,7 +54,7 @@ app.use("/ranking", rankingRoutes);
 // User profile routes
 app.use("/profile", profileRoutes);
 
-const port = 8000;
+const port = 443;
 
 app.get("/hello-world", (req, res) => {
   res.send("hello world");
