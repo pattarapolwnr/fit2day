@@ -57,8 +57,12 @@ router.post("/login", async (req, res, next) => {
 
 router.get("/logout", (req, res) => {
   return res
-    .clearCookie("token", { path: "/", domain: "https://fit2day.vercel.app" })
-    .redirect("/")
+    .clearCookie("token", {
+      path: "/",
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+    })
     .status(200)
     .json({ message: "Logout successfully!" });
 });
