@@ -56,7 +56,7 @@ export default function Home() {
       const res = await axios.get(`${process.env.baseURL}/auth/logout`, {
         withCredentials: true,
       });
-      router.push("/");
+      //router.push("/");
     } catch (error) {
       console.log(error);
     }
